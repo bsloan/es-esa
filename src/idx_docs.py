@@ -69,7 +69,7 @@ def get_concepts(text, max_clauses, cutoff, doc_id, cutoff_freq=False):
         return []
 
     concepts = []
-    query = get_common_terms_query(cutoff, text) if use_cutoff_freq else get_match_query(cutoff, text)
+    query = get_common_terms_query(cutoff, text) if cutoff_freq else get_match_query(cutoff, text)
     for hit in es.search(index="wikipedia", doc_type="article", body=query, request_timeout=30)["hits"]["hits"]:
         score = hit["_score"]
         id = hit["_id"]
