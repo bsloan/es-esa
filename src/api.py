@@ -46,12 +46,15 @@ def search():
     else:
         main_query = get_match_query(offs, size, q)
 
-    docs_results = es.search(index="document", doc_type="abstract", body=main_query, explain=debug)
-    elapsed = time_ms() - now
+    search_args = {"index": "document", "doc_type": "abstract", "body": main_query}
     response = OrderedDict()
     if debug is not None:
         response["concepts_query"] = concepts_query
         response["main_query"] = main_query
+        search_args["explain"] = debug
+
+    docs_results = es.search(**search_args)
+    elapsed = time_ms() - now
     response["query_time_ms"] = elapsed
     response["query_concepts"] = concepts
     response["hits"] = docs_results["hits"]["hits"]
