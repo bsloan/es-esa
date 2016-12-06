@@ -40,7 +40,7 @@ def search():
     if boost is not None and expand is not None:
         main_query = get_boosted_expanded_query(offs, size, q, concepts)
     elif boost is not None:
-        main_query = get_boosted_expanded_query(offs, size, q, concepts)
+        main_query = get_boosted_query(offs, size, q, concepts)
     elif expand is not None:
         main_query = get_expanded_query(offs, size, q, concepts)
     else:
