@@ -46,6 +46,7 @@ def process_file(inp):
                     print es.index(index="wikipedia", doc_type="article", id=page_id, body=doc)  # TODO check failure
             else:
                 print "skipping article:", page_title
+            elem.clear()
 
 
 if __name__ == "__main__":
