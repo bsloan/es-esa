@@ -4,6 +4,7 @@ from flask import request, jsonify
 from elasticsearch import Elasticsearch
 from query import *
 from flask import Blueprint
+from error import BadRequest
 
 
 search_api = Blueprint("search_api", __name__)
@@ -29,6 +30,8 @@ def search():
         size = 10
     if not offs:
         offs = 0
+    if not q:
+        raise BadRequest("Query string is required", status_code=400)
 
     concepts_query = None
     concepts = []
@@ -65,3 +68,10 @@ def search():
     response["query_concepts"] = concepts
     response["hits"] = docs_results["hits"]["hits"]
     return jsonify(response)
+
+
+@search_api.errorhandler(BadRequest)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
