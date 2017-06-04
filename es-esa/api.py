@@ -5,7 +5,9 @@ from util import time_ms
 from query import *
 
 app = Flask(__name__)
-app.config["JSON_SORT_KEYS"] = False
+app.config.from_object("settings")
+app.config.from_envvar("ES_ESA_SETTINGS")
+
 es = Elasticsearch()
 
 
