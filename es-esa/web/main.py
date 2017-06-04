@@ -8,4 +8,4 @@ app.register_blueprint(search_api)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host=app.config["HOST"])
