@@ -1,17 +1,21 @@
+from time import time
 from collections import OrderedDict
-from flask import Flask, request, jsonify
+from flask import request, jsonify
 from elasticsearch import Elasticsearch
-from util import time_ms
 from query import *
+from flask import Blueprint
 
-app = Flask(__name__)
-app.config.from_object("settings")
-app.config.from_envvar("ES_ESA_SETTINGS")
+
+search_api = Blueprint("search_api", __name__)
 
 es = Elasticsearch()
 
 
-@app.route("/search")
+def time_ms():
+    return int(round(time() * 1000))
+
+
+@search_api.route("/search")
 def search():
     q = request.args.get("q")
     size = request.args.get("size")
@@ -61,7 +65,3 @@ def search():
     response["query_concepts"] = concepts
     response["hits"] = docs_results["hits"]["hits"]
     return jsonify(response)
-
-
-if __name__ == "__main__":
-   app.run()

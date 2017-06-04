@@ -1,7 +1,7 @@
 import sys, re, traceback
 from elasticsearch import Elasticsearch
 from xml.etree import cElementTree
-from util import time_ms, list_files
+from util.util import time_ms, list_files
 
 es = Elasticsearch()
 
