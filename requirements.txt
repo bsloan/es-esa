@@ -6,3 +6,5 @@ MarkupSafe==0.23
 mwparserfromhell==0.4.3
 urllib3==1.17
 Werkzeug==0.11.11
+aws-requests-auth
+boto3

@@ -21,12 +21,12 @@ resource "aws_elasticsearch_domain" "es" {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Action": "es:*",
-            "Principal": "*",
             "Effect": "Allow",
-            "Condition": {
-                "IpAddress": {"aws:SourceIp": ["x.x.x.x"]}
-            }
+            "Principal": {
+                "AWS": "arn:aws:iam::892100926213:role/EC2-Elasticsearch-User"
+            },
+        "Action": "es:*",
+        "Resource": "arn:aws:es:us-east-1:892100926213:domain/es-esa/*"
         }
     ]
 }
