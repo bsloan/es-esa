@@ -25,7 +25,7 @@ resource "aws_elasticsearch_domain" "es" {
             "Principal": "*",
             "Effect": "Allow",
             "Condition": {
-                "IpAddress": {"aws:SourceIp": ["24.46.233.70"]}
+                "IpAddress": {"aws:SourceIp": ["x.x.x.x"]}
             }
         }
     ]
