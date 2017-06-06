@@ -1,4 +1,6 @@
 data*
-env*
+venv*
 .idea*
 *.pyc
+*.cfg
+terraform*

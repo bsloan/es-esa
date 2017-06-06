@@ -1,15 +1,34 @@
+from time import time
 from collections import OrderedDict
-from flask import Flask, request, jsonify
-from elasticsearch import Elasticsearch
-from util import time_ms
+from flask import request, jsonify
+from elasticsearch import Elasticsearch, RequestsHttpConnection
 from query import *
+from flask import Blueprint, current_app
+from error import BadRequest
+from aws_requests_auth.aws_auth import AWSRequestsAuth
+from aws_requests_auth import boto_utils
 
-app = Flask(__name__)
-app.config["JSON_SORT_KEYS"] = False
-es = Elasticsearch()
+
+search_api = Blueprint("search_api", __name__)
+
+es = None
 
 
-@app.route("/search")
+def init_elasticsearch():
+    auth = AWSRequestsAuth(aws_host=current_app.config["AWS_ELASTICSEARCH_HOST"],
+                           aws_region=current_app.config["AWS_ELASTICSEARCH_REGION"],
+                           aws_service="es", **boto_utils.get_credentials())
+    global es
+    es = Elasticsearch(host=current_app.config["AWS_ELASTICSEARCH_HOST"],
+                       port=current_app.config["AWS_ELASTICSEARCH_PORT"],
+                       connection_class=RequestsHttpConnection, http_auth=auth)
+
+
+def time_ms():
+    return int(round(time() * 1000))
+
+
+@search_api.route("/search")
 def search():
     q = request.args.get("q")
     size = request.args.get("size")
@@ -23,6 +42,8 @@ def search():
         size = 10
     if not offs:
         offs = 0
+    if not q:
+        raise BadRequest("Query string is required", status_code=400)
 
     concepts_query = None
     concepts = []
@@ -61,5 +82,8 @@ def search():
     return jsonify(response)
 
 
-if __name__ == "__main__":
-   app.run()
+@search_api.errorhandler(BadRequest)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
