@@ -27,7 +27,9 @@ esaApp.controller("searchController", function ($scope, $http) {
         var terms = $scope.search.query;
         $http.get("/search?q=" + terms)
             .success(function (response) {
-                $scope.search.hits = response.hits; // FIXME
+                $scope.search.hits = response.hits;
+                $scope.search.queryTime = response.query_time_ms;
+                $scope.search.queryConcepts = response.query_concepts;
                 console.log("Search successful");
             })
             .error(function (error, status) { // TODO: "search temporarily unavailable" on 5xx

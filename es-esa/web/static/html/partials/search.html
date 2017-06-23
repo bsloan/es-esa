@@ -8,6 +8,14 @@
     </div>
     <br/>
     <br/>
+    <div ng-show="search.hits">
+        <p class="text-center"><em>Query complete in {{ search.queryTime }} ms.</em></p>
+        <!-- <p class="text-center"><em>
+            <span ng-repeat="concept in search.queryConcepts">
+                {{ concept.concept }} : {{ concept.score }},
+            </span>
+        </em></p> -->
+    </div>
     <hr/>
     <div ng-show="search.hits">
         <h4 class="text-center">Results</h4>
