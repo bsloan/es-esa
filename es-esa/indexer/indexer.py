@@ -25,8 +25,12 @@ class DocumentIndexer(object):
 
 class WikipediaIndexer(DocumentIndexer):
     def index_file(self, inp, use_cutoff_freq=False):
-        for event, elem in cElementTree.iterparse(open(inp)):
-            if elem.tag == "{http://www.mediawiki.org/xml/export-0.10/}page":
+        context = cElementTree.iterparse(open(inp), events=("start", "end"))
+        context = iter(context)
+        event, root = context.next()
+
+        for event, elem in context:
+            if event == "end" and elem.tag == "{http://www.mediawiki.org/xml/export-0.10/}page":
                 page_id = elem.findtext("{http://www.mediawiki.org/xml/export-0.10/}id")
                 page_title = elem.findtext("{http://www.mediawiki.org/xml/export-0.10/}title")
                 revision = elem.find("{http://www.mediawiki.org/xml/export-0.10/}revision")
@@ -50,7 +54,7 @@ class WikipediaIndexer(DocumentIndexer):
                         print es.index(index="wikipedia", doc_type="article", id=page_id, body=doc)  # TODO check failure
                 else:
                     print "skipping article:", page_title
-                elem.clear()
+            root.clear()
 
 
 class RepecIndexer(DocumentIndexer):
