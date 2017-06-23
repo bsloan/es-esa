@@ -8,6 +8,7 @@ env.project_root = "/opt/es-esa/{0}".format(env.deployment)
 env.activate = "source {0}/venv/bin/activate".format(env.project_root)
 env.version = env.branch
 
+
 @contextmanager
 def virtualenv():
     with cd(env.project_root):
