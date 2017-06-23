@@ -3,11 +3,10 @@ from contextlib import contextmanager
 from fabric.api import *
 
 env.user = "ubuntu"
-env.version = "deploy-stuff"
 env.deployment = "{0}-{1}".format(env.version, datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
 env.project_root = "/opt/es-esa/{0}".format(env.deployment)
 env.activate = "source {0}/venv/bin/activate".format(env.project_root)
-
+env.version = env.branch
 
 @contextmanager
 def virtualenv():
