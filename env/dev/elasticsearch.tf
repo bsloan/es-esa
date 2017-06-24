@@ -4,6 +4,7 @@ resource "aws_elasticsearch_domain" "es" {
 
   cluster_config {
     instance_type = "t2.micro.elasticsearch"
+    instance_count = 2
   }
 
   ebs_options {
@@ -14,6 +15,7 @@ resource "aws_elasticsearch_domain" "es" {
 
   advanced_options {
     "rest.action.multi.allow_explicit_index" = "true"
+    "indices.fielddata.cache.size" = ""
   }
 
   access_policies = <<CONFIG
