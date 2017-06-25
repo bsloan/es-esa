@@ -24,6 +24,7 @@ esaApp.controller("searchController", function ($scope, $http) {
 
     $scope.submit = function () {
         console.log("Search submitted");
+        $scope.waiting = true;
         var terms = $scope.search.query;
         $http.get("/search?q=" + terms)
             .success(function (response) {
@@ -35,6 +36,9 @@ esaApp.controller("searchController", function ($scope, $http) {
             .error(function (error, status) { // TODO: "search temporarily unavailable" on 5xx
                 $scope.search.error = { message: error.message, status: status };
                 console.log(error.message)
+            })
+            .finally(function () {
+                $scope.waiting = false;
         });
     };
 

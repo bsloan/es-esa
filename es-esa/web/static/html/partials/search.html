@@ -8,6 +8,9 @@
     </div>
     <br/>
     <br/>
+    <div ng-show="waiting">
+        <img class="center-block" src="/static/img/spinner.gif">
+    </div>
     <div ng-show="search.hits">
         <p class="text-center"><em>Query complete in {{ search.queryTime }} ms.</em></p>
         <!-- <p class="text-center"><em>
