@@ -11,17 +11,14 @@ from aws_requests_auth import boto_utils
 
 search_api = Blueprint("search_api", __name__)
 
-es = None
-
 
 def init_elasticsearch():
     auth = AWSRequestsAuth(aws_host=current_app.config["AWS_ELASTICSEARCH_HOST"],
                            aws_region=current_app.config["AWS_ELASTICSEARCH_REGION"],
                            aws_service="es", **boto_utils.get_credentials())
-    global es
-    es = Elasticsearch(host=current_app.config["AWS_ELASTICSEARCH_HOST"],
-                       port=current_app.config["AWS_ELASTICSEARCH_PORT"],
-                       connection_class=RequestsHttpConnection, http_auth=auth)
+    return Elasticsearch(host=current_app.config["AWS_ELASTICSEARCH_HOST"],
+                         port=current_app.config["AWS_ELASTICSEARCH_PORT"],
+                         connection_class=RequestsHttpConnection, http_auth=auth)
 
 
 def time_ms():
@@ -30,6 +27,7 @@ def time_ms():
 
 @search_api.route("/search")
 def search():
+    es = init_elasticsearch()
     q = request.args.get("q")
     size = request.args.get("size")
     offs = request.args.get("from")

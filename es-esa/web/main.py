@@ -10,6 +10,4 @@ app.register_blueprint(web_ui.web_ui)
 
 
 if __name__ == "__main__":
-    with app.app_context():
-        api.init_elasticsearch()
     app.run(host=app.config["HOST"])
