@@ -26,7 +26,7 @@
         <div class="col-sm-1"></div>
         <div class="col-lg-7">
             <div ng-repeat="hit in search.hits">
-                <h5>{{ hit._source.title }}</h5>
+                <h5><a href="javascript:;">{{ hit._source.title }}</a></h5>
                 <p>{{ hit._source.abstract ? hit._source.abstract : "No abstract available." }}</p>
                 <p><em>
                     <span ng-repeat="concept in hit._source.concepts">
